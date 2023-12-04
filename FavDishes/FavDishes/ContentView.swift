@@ -31,7 +31,7 @@ struct ContentView: View {
             .toolbar{
                 ToolbarItem {
                     Button(action: {
-                        //
+                        isShowingNewDishForm = true
                     }, label: {
                         Image(systemName: "plus")
                     })
@@ -45,7 +45,9 @@ struct ContentView: View {
                 }
                 
             }
-           
+            .sheet(isPresented: $isShowingNewDishForm, content: {
+                NewDishForm()
+            })
         }
     }
 }
