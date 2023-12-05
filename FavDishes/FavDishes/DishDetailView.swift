@@ -8,11 +8,27 @@
 import SwiftUI
 
 struct DishDetailView: View {
+    var dish:Dish
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Form{
+            Section{
+                Image(uiImage: dish.image)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(height: 300)
+                    .clipped()
+            }
+            Section("Menu"){
+                Text(dish.name)
+            }
+            Section("Location"){
+                Text(dish.restaurant)
+
+            }
+        }
     }
 }
 
 #Preview {
-    DishDetailView()
+    DishDetailView(dish: Dish.example)
 }
