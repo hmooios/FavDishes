@@ -13,25 +13,38 @@ struct ContentView: View {
     
     @State private var isShowingNewDishForm=false
     
+    @State private var isEditing = false
+
+    
     var body: some View {
         NavigationView{
             List{
                 ForEach(dishes.dishes){ dish in
-                    NavigationLink {
-                        DishDetailView()
-                    } label: {
-                        VStack{
-                            Text(dish.name)
-                        }
+                    Section{
+                                            NavigationLink {
+                                                DishDetailView(dish: dish)
+                                            } label: {
+                                                VStack {
+                                                                                Image(uiImage: dish.image)
+                                                                                    .resizable()
+                                                                                    .aspectRatio(contentMode: .fill)
+                                                                                    .frame(height: 150)
+                                                                                    .clipped()
+                                                                                Text(dish.restaurant)
+                                                                                    .font(.subheadline)
+                                                                                    .foregroundColor(.secondary)
+                                                                            }
+                      }
                     }
-
                 }
+                .onDelete(perform: deleteDish)
+
             }
             .navigationTitle("My FavDishes")
             .toolbar{
                 ToolbarItem {
                     Button(action: {
-                        //
+                        isShowingNewDishForm = true
                     }, label: {
                         Image(systemName: "plus")
                     })
@@ -40,14 +53,22 @@ struct ContentView: View {
                     EditButton()
                         .foregroundColor(.accentColor)
                         .onTapGesture {
-                         //   isEditing.toggle()
+                            isEditing.toggle()
                         }
                 }
                 
             }
-           
+            .sheet(isPresented: $isShowingNewDishForm, content: {
+                NewDishForm(dishes:dishes)
+            })
         }
+        
     }
+    
+    private func deleteDish(at offsets:IndexSet){
+        dishes.deleteDish(at: offsets)
+    }
+
 }
 
 #Preview {
